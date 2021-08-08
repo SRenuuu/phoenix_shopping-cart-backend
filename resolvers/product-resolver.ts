@@ -6,8 +6,13 @@ import {ProductInput} from "./types/product-input";
 export class ProductResolver {
 
     @Query(_returns => Product, {nullable: false})
-    async returnSingleProduct(@Arg("id") id: string) {
-        return await ProductModel.findById({_id: id});
+    async returnProductByID(@Arg("id") id: string) {
+        return ProductModel.findById({ _id: id });
+    };
+
+    @Query(_returns => Product, {nullable: false})
+    async returnProductByName(@Arg("name") name: string) {
+        return await ProductModel.find({ name: name }).exec();
     };
 
     @Query(() => [Product])
@@ -16,19 +21,23 @@ export class ProductResolver {
     };
 
     @Mutation(() => Product)
-    async createProduct(@Arg("data"){ name, crossedPrice, price, category }: ProductInput): Promise<Product> {
-        const product = (await ProductModel.create({
-            name,
-            crossedPrice,
-            price,
-            category
-        })).save();
-        return product;
+    async createProduct(@Arg("data") data: ProductInput): Promise<Product> {
+        const newProduct = (await ProductModel.create(data)).save();
+        return newProduct;
+    }
+
+    @Mutation(() => Product)
+    async updateProductByID(
+        @Arg("id") !id: string,
+        @Arg("data") data: ProductInput): Promise<Product> {
+        const updatedProduct = (await ProductModel.findByIdAndUpdate({_id: id}, data, { new: true }));
+        return updatedProduct;
     }
 
     @Mutation(() => Boolean)
     async deleteProduct(@Arg("id") id: string) {
-        await ProductModel.deleteOne({id});
+        // const productID = mongoose.Types.ObjectId(id);
+        await ProductModel.deleteOne({_id: id});
         return true;
     }
 }

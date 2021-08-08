@@ -7,11 +7,11 @@ const graphql = require('graphql');
 
 export class Product {
     @Field(() => ID)
-    id: string;
+    id: String;
 
     @Field()
     @Property()
-    name: string;
+    name: String;
 
     @Field()
     @Property(_type => Float)
@@ -23,7 +23,11 @@ export class Product {
 
     @Field()
     @Property()
-    category: string;
+    category: String;
+
+    @Field({ nullable: true })
+    @Property()
+    imageUrl?: String;
 }
 
 export const ProductModel = getModelForClass(Product);

@@ -5,7 +5,7 @@ import { Product } from "../../schema/product";
 export class ProductInput implements Partial<Product> {
 
     @Field()
-    name: string;
+    name: String;
 
     @Field()
     crossedPrice: number;
@@ -14,5 +14,9 @@ export class ProductInput implements Partial<Product> {
     price: number;
 
     @Field()
-    category: string;
+    category: String;
+
+    @Field({ nullable: true })
+    imageUrl?: String;
 }
+

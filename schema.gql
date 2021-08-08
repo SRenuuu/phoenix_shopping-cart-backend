@@ -6,6 +6,7 @@
 type Mutation {
   createProduct(data: ProductInput!): Product!
   deleteProduct(id: String!): Boolean!
+  updateProductByID(data: ProductInput!, id: String!): Product!
 }
 
 """The Product model"""
@@ -13,6 +14,7 @@ type Product {
   category: String!
   crossedPrice: Float!
   id: ID!
+  imageUrl: String
   name: String!
   price: Float!
 }
@@ -20,11 +22,13 @@ type Product {
 input ProductInput {
   category: String!
   crossedPrice: Float!
+  imageUrl: String
   name: String!
   price: Float!
 }
 
 type Query {
   returnAllProducts: [Product!]!
-  returnSingleProduct(id: String!): Product!
+  returnProductByID(id: String!): Product!
+  returnProductByName(name: String!): Product!
 }
